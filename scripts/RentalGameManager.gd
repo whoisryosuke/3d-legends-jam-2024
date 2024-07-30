@@ -5,12 +5,27 @@ extends Node
 @onready var timer_text = $"../MiniGameRentalUI/%TimerText"
 @onready var dialogue_text = $"../MiniGameRentalUI/%DialogueText"
 
+const DEFAULT_GAME_TIME = 60
 var playing = false
 var paused = false
 var completed = false
 var current_index = 0
+const BUTTONS = [
+	"Cross",
+	"Circle",
+	"Triangle",
+	"Square",
+	"L1",
+	"L2",
+	"R1",
+	"R2",
+	"DPad Up",
+	"DPad Down",
+	"DPad Left",
+	"DPad Right",
+]
 var button_combinations = [
-	["Cross"],
+	["Square"],
 	["Triangle"],
 ]
 
@@ -18,7 +33,7 @@ var button_combinations = [
 func _ready():
 	# Start the game timer
 	# TODO: Delay to a 1...2..3 countdown
-	game_timer.start(60)
+	start_game()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -31,6 +46,9 @@ func _process(delta):
 	dialogue_text.text = current_button
 
 func _input(event):
+	# Restart game
+	if(game_timer.is_stopped() and Input.is_action_just_pressed("Cross")):
+		restart_game()
 	# Pause game
 	if(!game_timer.is_stopped() and Input.is_action_just_pressed("Start")):
 		paused = !paused
@@ -56,10 +74,16 @@ func _input(event):
 				current_index += 1
 				print("Button # " + str(current_index))
 				
+func start_game():
+	game_timer.start(DEFAULT_GAME_TIME)
+	
 func complete_game():
 	completed = true
 	# TODO: Save time here for scoreboards/rewards
 	game_timer.stop()
+	
+	# Show win UI
+	$"../MiniGameWinScreen".visible = true
 
 func pause_game():
 	print("Pausing game")
@@ -68,8 +92,25 @@ func pause_game():
 	game_timer.paused = true
 	
 	# Show pause UI
+	$"../QuickPause".visible = true
 
 func unpause_game():
 	print("Unpausing game")
 	# Pause game timer
 	game_timer.paused = false
+
+	# Hide Pause UI
+	$"../QuickPause".visible = false
+	
+func restart_game():
+	print("Restarting game")
+	
+	# Reset state
+	completed = false
+	current_index = 0
+	
+	# Hide win screen
+	$"../MiniGameWinScreen".visible = false
+	
+	# Start game again
+	start_game()

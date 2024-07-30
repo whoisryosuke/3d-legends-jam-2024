@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://b08h8oh4o2550"]
+[gd_scene load_steps=9 format=3 uid="uid://b08h8oh4o2550"]
 
 [ext_resource type="PackedScene" uid="uid://cy36aygvs66pn" path="res://assets/models/gobot/gobot_skin.tscn" id="1_6agcr"]
 [ext_resource type="PackedScene" uid="uid://jbq0ujtmu7cx" path="res://scenes/mini_game_rental_ui.tscn" id="2_10k8o"]
 [ext_resource type="Script" path="res://scripts/RentalGameManager.gd" id="3_fnptv"]
+[ext_resource type="PackedScene" uid="uid://c122tuvpq5y52" path="res://scenes/quick_pause.tscn" id="4_l4gis"]
+[ext_resource type="PackedScene" uid="uid://c21p7yb10y5sk" path="res://scenes/mini_game_win_screen.tscn" id="5_kluee"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gj0iq"]
 
@@ -35,3 +37,9 @@ script = ExtResource("3_fnptv")
 [node name="GameTimer" type="Timer" parent="."]
 
 [node name="NextTimer" type="Timer" parent="."]
+
+[node name="QuickPause" parent="." instance=ExtResource("4_l4gis")]
+visible = false
+
+[node name="MiniGameWinScreen" parent="." instance=ExtResource("5_kluee")]
+visible = false
