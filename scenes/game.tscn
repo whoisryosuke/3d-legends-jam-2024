@@ -1,0 +1,51 @@
+[gd_scene load_steps=11 format=3 uid="uid://bjic62deaimwm"]
+
+[ext_resource type="PackedScene" uid="uid://bdyptm7smjixm" path="res://assets/models/gdbot/gdbot_skin.tscn" id="2_7exxi"]
+[ext_resource type="PackedScene" uid="uid://tyjgdu65yj3m" path="res://assets/models/round_bat/round_bat_skin.tscn" id="3_2cqp7"]
+[ext_resource type="PackedScene" uid="uid://prh35jb6tjtd" path="res://assets/models/sophia/sophia_skin.tscn" id="4_o2wub"]
+[ext_resource type="PackedScene" uid="uid://bpjqcswabdtyb" path="res://assets/models/beetle_bot/beetlebot_skin.tscn" id="5_fpojg"]
+[ext_resource type="PackedScene" uid="uid://cpnf3mfr42oj8" path="res://scenes/player.tscn" id="6_bi7y8"]
+[ext_resource type="PackedScene" uid="uid://482rxnrhe64v" path="res://assets/models/bee_bot/bee_bot_skin.tscn" id="6_hpedy"]
+[ext_resource type="MeshLibrary" uid="uid://ce62lqm2m8usr" path="res://libraries/prototype_map_lib.tres" id="7_oj1ga"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7wq3e"]
+
+[sub_resource type="Sky" id="Sky_dbsn4"]
+sky_material = SubResource("ProceduralSkyMaterial_7wq3e")
+
+[sub_resource type="Environment" id="Environment_2cxpw"]
+background_mode = 2
+sky = SubResource("Sky_dbsn4")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="GDbotSkin" parent="." instance=ExtResource("2_7exxi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4242, 1.19209e-07, -0.0460365)
+
+[node name="RoundBatSkin" parent="." instance=ExtResource("3_2cqp7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.52527, 1.00579, -0.308444)
+
+[node name="SophiaSkin" parent="." instance=ExtResource("4_o2wub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.00271, 0, 0.0692804)
+
+[node name="BeetlebotSkin" parent="." instance=ExtResource("5_fpojg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.79783, 0, -0.129618)
+
+[node name="BeebotSkin" parent="." instance=ExtResource("6_hpedy")]
+transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, -4.68384, 1.03736, 0.0629413)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2cxpw")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("6_bi7y8")]
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05618, 3.61393)
+
+[node name="GridMap" type="GridMap" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.985, 0)
+mesh_library = ExtResource("7_oj1ga")
+data = {
+"cells": PackedInt32Array(65529, 65530, 0, 65530, 65530, 0, 65531, 65530, 0, 65532, 65530, 0, 65533, 65530, 0, 65534, 65530, 0, 65535, 65530, 0, 0, 65530, 0, 1, 65530, 0, 2, 65530, 0, 3, 65530, 0, 4, 65530, 0, 5, 65530, 0, 6, 65530, 0, 6, 65531, 0, 6, 65532, 0, 6, 65533, 0, 6, 65534, 0, 6, 65535, 0, 6, 0, 0, 6, 1, 0, 6, 2, 0, 6, 3, 0, 6, 4, 0, 6, 5, 0, 5, 5, 0, 4, 5, 0, 3, 5, 0, 2, 5, 0, 1, 5, 0, 0, 5, 0, 65535, 5, 0, 65534, 5, 0, 65533, 5, 0, 65532, 5, 0, 65531, 5, 0, 65530, 5, 0, 65529, 5, 0, 65529, 4, 0, 65529, 3, 0, 65529, 2, 0, 65529, 1, 0, 65529, 0, 0, 65529, 65535, 0, 65529, 65534, 0, 65529, 65533, 0, 65529, 65532, 0, 65529, 65531, 0, 65530, 65531, 0, 65531, 65531, 0, 65532, 65531, 0, 65533, 65531, 0, 65534, 65531, 0, 65535, 65531, 0, 0, 65531, 0, 1, 65531, 0, 2, 65531, 0, 3, 65531, 0, 4, 65531, 0, 5, 65531, 0, 5, 65532, 0, 5, 65533, 0, 5, 65534, 0, 5, 65535, 0, 5, 0, 0, 5, 1, 0, 5, 2, 0, 5, 3, 0, 5, 4, 0, 4, 4, 0, 3, 4, 0, 2, 4, 0, 1, 4, 0, 0, 4, 0, 65535, 4, 0, 65534, 4, 0, 65533, 4, 0, 65532, 4, 0, 65531, 4, 0, 65530, 4, 0, 65530, 3, 0, 65530, 2, 0, 65530, 1, 0, 65530, 0, 0, 65530, 65535, 0, 65530, 65534, 0, 65530, 65533, 0, 65530, 65532, 0, 65531, 65532, 0, 65532, 65532, 0, 65533, 65532, 0, 65534, 65532, 0, 65535, 65532, 0, 0, 65532, 0, 1, 65532, 0, 2, 65532, 0, 3, 65532, 0, 4, 65532, 0, 4, 65533, 0, 4, 65534, 0, 4, 65535, 0, 4, 0, 0, 4, 1, 0, 4, 2, 0, 4, 3, 0, 3, 3, 0, 2, 3, 0, 1, 3, 0, 0, 3, 0, 65534, 3, 0, 65533, 3, 0, 65532, 3, 0, 65531, 3, 0, 65531, 2, 0, 65531, 1, 0, 65531, 0, 0, 65531, 65535, 0, 65531, 65534, 0, 65531, 65533, 0, 65532, 65533, 0, 65533, 65533, 0, 65534, 65533, 0, 65535, 65533, 0, 0, 65533, 0, 1, 65533, 0, 2, 65533, 0, 3, 65533, 0, 3, 65534, 0, 3, 65535, 0, 3, 0, 0, 3, 1, 0, 3, 2, 0, 2, 2, 0, 1, 2, 0, 0, 2, 0, 65535, 2, 0, 65535, 3, 0, 65534, 2, 0, 65533, 2, 0, 65532, 2, 0, 65532, 1, 0, 65532, 0, 0, 65532, 65535, 0, 65532, 65534, 0, 65533, 65534, 0, 65534, 65534, 0, 65535, 65534, 0, 0, 65534, 0, 1, 65534, 0, 2, 65534, 0, 2, 65535, 0, 2, 0, 0, 2, 1, 0, 1, 1, 0, 0, 1, 0, 65535, 1, 0, 65534, 1, 0, 65533, 1, 0, 65533, 0, 0, 65533, 65535, 0, 65534, 65535, 0, 65535, 65535, 0, 0, 65535, 0, 1, 65535, 0, 1, 0, 0, 0, 0, 0, 65535, 0, 0, 65534, 0, 0, 65538, 0, 1, 65538, 65535, 0, 65538, 65534, 0, 65538, 65533, 0, 65537, 65534, 0, 65537, 65533, 0, 65537, 65532, 0, 65539, 65532, 0, 65539, 65533, 0, 65539, 65534, 0, 65538, 65531, 0, 65537, 65531, 0, 65539, 65531, 0, 65538, 65532, 0)
+}
+metadata/_editor_floor_ = Vector3(0, 1, 0)
