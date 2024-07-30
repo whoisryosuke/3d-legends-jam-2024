@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://b08h8oh4o2550"]
+
+[ext_resource type="PackedScene" uid="uid://cy36aygvs66pn" path="res://assets/models/gobot/gobot_skin.tscn" id="1_6agcr"]
+[ext_resource type="PackedScene" uid="uid://jbq0ujtmu7cx" path="res://scenes/mini_game_rental_ui.tscn" id="2_10k8o"]
+[ext_resource type="Script" path="res://scripts/RentalGameManager.gd" id="3_fnptv"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gj0iq"]
+
+[sub_resource type="Sky" id="Sky_hppxj"]
+sky_material = SubResource("ProceduralSkyMaterial_gj0iq")
+
+[sub_resource type="Environment" id="Environment_wvhs2"]
+background_mode = 2
+sky = SubResource("Sky_hppxj")
+
+[node name="MiniGameRental" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.955787, 1.99904)
+
+[node name="GobotSkin" parent="." instance=ExtResource("1_6agcr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0408672, 0, -0.857535)
+
+[node name="MiniGameRentalUI" parent="." instance=ExtResource("2_10k8o")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_wvhs2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 4.83884, 0)
+
+[node name="RentalGameManager" type="Node" parent="."]
+script = ExtResource("3_fnptv")
+
+[node name="GameTimer" type="Timer" parent="."]

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://duc0waxc3a6l6"]
+
+[ext_resource type="Script" path="res://scenes/scene_manager.gd" id="1_e77tu"]
+[ext_resource type="PackedScene" uid="uid://c32pp6pxnq1bg" path="res://scenes/ui_title_screen.tscn" id="2_1kl4p"]
+
+[node name="SceneManager" type="Node3D"]
+script = ExtResource("1_e77tu")
+
+[node name="SceneContainer" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TitleScreen" parent="CanvasLayer" instance=ExtResource("2_1kl4p")]

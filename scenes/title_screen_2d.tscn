@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://bf70pc1n3w7qt"]
+
+[ext_resource type="Texture2D" uid="uid://uyvlh167njpu" path="res://assets/ui/pexels-kseniya-lapteva-93670191-9176032.jpg" id="1_thsld"]
+[ext_resource type="Theme" uid="uid://gsxt6si1r47y" path="res://themes/default_theme.tres" id="2_rrsx0"]
+[ext_resource type="Script" path="res://scenes/Button.gd" id="3_ysw27"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="BG" type="Sprite2D" parent="."]
+position = Vector2(4, 180)
+rotation = -1.5708
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_thsld")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -20.0
+offset_right = 48.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="GridContainer"]
+layout_mode = 2
+theme = ExtResource("2_rrsx0")
+theme_override_font_sizes/font_size = 128
+text = "Start Game"
+script = ExtResource("3_ysw27")
+
+[connection signal="pressed" from="GridContainer/Button" to="GridContainer/Button" method="_on_pressed"]
