@@ -37,6 +37,17 @@ func _physics_process(delta):
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
 		
+	# Rotate mesh based on movement
+	if direction:
+		if direction.x > 0:
+			model.rotation.y = PI/2
+		if direction.x < 0:
+			model.rotation.y = -PI/2
+		if direction.z < 0:
+			model.rotation.y = PI
+		if direction.z > 0:
+			model.rotation.y = 0
+		
 	# Change animation
 	if (direction.x != 0 or direction.z != 0) and is_on_floor():
 		model.run()
