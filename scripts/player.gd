@@ -15,6 +15,7 @@ var cam_turn = 0
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _input(event):
+	# Mouse based camera rotation
 	if Input.is_action_pressed("Camera Turn") and event is InputEventMouseMotion:
 		cam_turn += -event.relative.x * 0.01
 
@@ -32,6 +33,12 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("Jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
+	# Gamepad based camera rotation
+	var camera_dir = Input.get_vector("Camera Left", "Camera Right", "Camera Forward", "Camera Backward")
+	var camera_direction = (transform.basis * Vector3(camera_dir.x, 0, camera_dir.y)).normalized()
+	print("camera rotated: ", camera_direction)
+	cam_turn += -camera_direction.x * (PI / 100)
+
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("Move Left", "Move Right", "Move Forward", "Move Backward")
@@ -43,6 +50,7 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
+		
 		
 	# Rotate mesh based on movement
 	if direction:
