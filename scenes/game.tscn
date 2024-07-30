@@ -39,9 +39,6 @@ environment = SubResource("Environment_2cxpw")
 
 [node name="CharacterBody3D" parent="." instance=ExtResource("6_bi7y8")]
 
-[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05618, 3.61393)
-
 [node name="GridMap" type="GridMap" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.985, 0)
 mesh_library = ExtResource("7_oj1ga")
