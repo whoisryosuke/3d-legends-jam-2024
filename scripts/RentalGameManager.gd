@@ -4,7 +4,7 @@ extends Node
 @onready var next_timer = $"../NextTimer"
 @onready var timer_text = $"../MiniGameRentalUI/%TimerText"
 @onready var dialogue_text = $"../MiniGameRentalUI/%DialogueText"
-
+var rand = RandomNumberGenerator.new()
 
 const DEFAULT_GAME_TIME = 60
 var playing = false
@@ -56,6 +56,10 @@ func _input(event):
 		var current_button_index = button_combinations[current_index]
 		var button_combo = constants.BUTTON_COMBOS[current_button_index]
 		
+		# Since there are multiple buttons pressed at once, 
+		# we keep track of their state here
+		# TODO: move this up somehow - so we can use a timer
+		# and give user an extra split second or something?
 		var presses = []
 		for button_index in len(button_combo):
 			var button = button_combo[button_index]
@@ -83,7 +87,19 @@ func _input(event):
 				current_index += 1
 				
 func start_game():
+	# Hydrate game with new button combos
+	generate_combos()
+	
+	# Start game timer
 	game_timer.start(DEFAULT_GAME_TIME)
+	
+func generate_combos():
+	var max_random = len(constants.BUTTON_COMBOS) - 1
+	button_combinations = []
+	# Generate 10 combos
+	for index in 10:
+		var random_index = rand.randf_range(0, max_random)
+		button_combinations.push_back(index)
 	
 func complete_game():
 	completed = true
