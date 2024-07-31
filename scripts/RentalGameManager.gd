@@ -5,28 +5,16 @@ extends Node
 @onready var timer_text = $"../MiniGameRentalUI/%TimerText"
 @onready var dialogue_text = $"../MiniGameRentalUI/%DialogueText"
 
+
 const DEFAULT_GAME_TIME = 60
 var playing = false
 var paused = false
 var completed = false
 var current_index = 0
-const BUTTONS = [
-	"Cross",
-	"Circle",
-	"Triangle",
-	"Square",
-	"L1",
-	"L2",
-	"R1",
-	"R2",
-	"DPad Up",
-	"DPad Down",
-	"DPad Left",
-	"DPad Right",
-]
+const constants = preload("res://scripts/constants.gd")
 var button_combinations = [
-	["Square"],
-	["Triangle"],
+	3,
+	4,
 ]
 
 # Called when the node enters the scene tree for the first time.
@@ -42,8 +30,12 @@ func _process(delta):
 	timer_text.text = str(int(game_timer.time_left))
 	
 	# Update dialogue (aka the required button sequence)
-	var current_button = button_combinations[current_index][0]
-	dialogue_text.text = current_button
+	var current_button_index = button_combinations[current_index]
+	var current_button = constants.BUTTON_COMBOS[current_button_index]
+	var current_button_text = ""
+	for text in current_button:
+		current_button_text += text + " "
+	dialogue_text.text = current_button_text
 
 func _input(event):
 	# Restart game
@@ -61,18 +53,34 @@ func _input(event):
 	# Check for button presses here
 	# Is game still running? And is debounce active?
 	if(!game_timer.is_stopped() and next_timer.is_stopped() and !paused):
-		var current_button = button_combinations[current_index][0]
-		# Check for input
-		if Input.is_action_just_pressed(current_button):
-			print("Pressed " + current_button)
-			# Start debounce
-			#next_timer.start(2)
+		var current_button_index = button_combinations[current_index]
+		var button_combo = constants.BUTTON_COMBOS[current_button_index]
+		
+		var presses = []
+		for button_index in len(button_combo):
+			var button = button_combo[button_index]
+			# Check for input
+			if Input.is_action_just_pressed(button):
+				print("Pressed " + button)
+				presses.push_back(true)
+				# Start debounce
+				#next_timer.start(2)
+			else:
+				presses.push_back(false)
+				
+		
+		# Did they press all buttons?
+		var complete = true
+		for button_index in len(button_combo):
+			if !presses[button_index]:
+				complete = false
+		
+		if complete:
 			# Go to next button or stop at max
 			if current_index + 1 == len(button_combinations):
 				complete_game()
 			if current_index < len(button_combinations) - 1:
 				current_index += 1
-				print("Button # " + str(current_index))
 				
 func start_game():
 	game_timer.start(DEFAULT_GAME_TIME)
