@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://ohd4fa04kwmp"]
+
+[node name="GameListItem" type="HBoxContainer"]
+offset_right = 502.0
+offset_bottom = 55.0
+size_flags_horizontal = 3
+
+[node name="GameName" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "Rental Name"
+
+[node name="ButtonCombo" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "Rental Name"

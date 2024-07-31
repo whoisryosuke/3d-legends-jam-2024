@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://b08h8oh4o2550"]
+[gd_scene load_steps=10 format=3 uid="uid://b08h8oh4o2550"]
 
 [ext_resource type="PackedScene" uid="uid://cy36aygvs66pn" path="res://assets/models/gobot/gobot_skin.tscn" id="1_6agcr"]
 [ext_resource type="PackedScene" uid="uid://jbq0ujtmu7cx" path="res://scenes/mini_game_rental_ui.tscn" id="2_10k8o"]
 [ext_resource type="Script" path="res://scripts/RentalGameManager.gd" id="3_fnptv"]
 [ext_resource type="PackedScene" uid="uid://c122tuvpq5y52" path="res://scenes/quick_pause.tscn" id="4_l4gis"]
 [ext_resource type="PackedScene" uid="uid://c21p7yb10y5sk" path="res://scenes/mini_game_win_screen.tscn" id="5_kluee"]
+[ext_resource type="PackedScene" uid="uid://cgrqwd2215plj" path="res://assets/models/mini_game_level/Rental Mini Game - Level - R3 - Export V1.glb" id="6_35e1p"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gj0iq"]
 
@@ -17,11 +18,8 @@ sky = SubResource("Sky_hppxj")
 
 [node name="MiniGameRental" type="Node3D"]
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.955787, 1.99904)
-
 [node name="GobotSkin" parent="." instance=ExtResource("1_6agcr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0408672, 0, -0.857535)
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 1.57332, 0, -3.77934)
 
 [node name="MiniGameRentalUI" parent="." instance=ExtResource("2_10k8o")]
 
@@ -43,3 +41,5 @@ visible = false
 
 [node name="MiniGameWinScreen" parent="." instance=ExtResource("5_kluee")]
 visible = false
+
+[node name="Rental Mini Game - Level - R3 - Export V1" parent="." instance=ExtResource("6_35e1p")]

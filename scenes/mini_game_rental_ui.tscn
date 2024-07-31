@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://jbq0ujtmu7cx"]
+[gd_scene load_steps=6 format=3 uid="uid://jbq0ujtmu7cx"]
 
 [ext_resource type="Theme" uid="uid://gsxt6si1r47y" path="res://themes/default_theme.tres" id="1_4ouni"]
+[ext_resource type="Script" path="res://scripts/mini_game_rental_ui.gd" id="2_b8bav"]
+[ext_resource type="PackedScene" uid="uid://ohd4fa04kwmp" path="res://scenes/game_list_item.tscn" id="2_hfie8"]
+[ext_resource type="Texture2D" uid="uid://dfac05x57r72m" path="res://assets/ui/dialogue-box.png" id="3_bgddt"]
+[ext_resource type="Texture2D" uid="uid://c8uol2aqkpw6s" path="res://assets/ui/mini-ui-box.png" id="3_viow7"]
 
 [node name="MiniGameRentalUI" type="Control"]
 layout_mode = 3
@@ -10,65 +14,120 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_4ouni")
+script = ExtResource("2_b8bav")
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
 layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1082.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer"]
+[node name="Content" type="VBoxContainer" parent="AspectRatioContainer"]
 custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/VBoxContainer"]
+[node name="Top Bar" type="HBoxContainer" parent="AspectRatioContainer/Content"]
 layout_mode = 2
 
-[node name="RemainingLabel" type="Label" parent="AspectRatioContainer/VBoxContainer/HBoxContainer"]
+[node name="RemainingBox" type="NinePatchRect" parent="AspectRatioContainer/Content/Top Bar"]
+custom_minimum_size = Vector2(600, 150)
 layout_mode = 2
-text = "Remaining gamers:"
+texture = ExtResource("3_viow7")
+patch_margin_left = 33
+patch_margin_top = 32
+patch_margin_right = 104
+patch_margin_bottom = 55
 
-[node name="RemainingCounter" type="Label" parent="AspectRatioContainer/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/Content/Top Bar/RemainingBox"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 16.0
+offset_right = 523.0
+offset_bottom = 104.0
+
+[node name="RemainingLabel" type="Label" parent="AspectRatioContainer/Content/Top Bar/RemainingBox/HBoxContainer"]
+custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
-text = "420"
+theme_override_colors/font_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_font_sizes/font_size = 40
+text = "CUSTOMERS LEFT:"
+vertical_alignment = 2
 
-[node name="TimerText" type="Label" parent="AspectRatioContainer/VBoxContainer/HBoxContainer"]
+[node name="SplitContainer" type="SplitContainer" parent="AspectRatioContainer/Content/Top Bar/RemainingBox/HBoxContainer"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
+[node name="RemainingCounter" type="Label" parent="AspectRatioContainer/Content/Top Bar/RemainingBox/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 64
+text = "420"
+
+[node name="TimerBox" type="NinePatchRect" parent="AspectRatioContainer/Content/Top Bar"]
+custom_minimum_size = Vector2(330, 150)
+layout_mode = 2
 size_flags_horizontal = 10
+texture = ExtResource("3_viow7")
+patch_margin_left = 33
+patch_margin_top = 32
+patch_margin_right = 104
+patch_margin_bottom = 55
+
+[node name="TimerText" type="Label" parent="AspectRatioContainer/Content/Top Bar/TimerBox"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 32.0
+offset_top = 16.0
+offset_right = 290.0
+offset_bottom = 104.0
+size_flags_horizontal = 10
+theme_override_colors/font_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_font_sizes/font_size = 64
 text = "00:00:00"
 
-[node name="CenterContainer" type="CenterContainer" parent="AspectRatioContainer/VBoxContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="AspectRatioContainer/Content"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="DialogueText" type="Label" parent="AspectRatioContainer/VBoxContainer/CenterContainer"]
+[node name="NinePatchRect" type="NinePatchRect" parent="AspectRatioContainer/Content/CenterContainer"]
+custom_minimum_size = Vector2(400, 150)
+layout_mode = 2
+texture = ExtResource("3_bgddt")
+patch_margin_left = 60
+patch_margin_top = 30
+patch_margin_right = 60
+patch_margin_bottom = 60
+
+[node name="DialogueText" type="Label" parent="AspectRatioContainer/Content/CenterContainer/NinePatchRect"]
 unique_name_in_owner = true
 layout_mode = 2
+offset_left = 39.0
+offset_top = 28.0
+offset_right = 142.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
 text = "Dialogue text"
 
-[node name="GridContainer" type="GridContainer" parent="AspectRatioContainer/VBoxContainer"]
+[node name="ComboBox" type="NinePatchRect" parent="AspectRatioContainer/Content"]
+custom_minimum_size = Vector2(600, 150)
 layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("3_viow7")
+patch_margin_left = 33
+patch_margin_top = 32
+patch_margin_right = 104
+patch_margin_bottom = 55
+
+[node name="GridContainer" type="GridContainer" parent="AspectRatioContainer/Content/ComboBox"]
+layout_mode = 2
+offset_top = 154.0
+offset_right = 1920.0
+offset_bottom = 539.0
 size_flags_vertical = 3
 columns = 2
 
-[node name="Control" type="Control" parent="AspectRatioContainer/VBoxContainer/GridContainer"]
+[node name="GameListItem" parent="AspectRatioContainer/Content/ComboBox/GridContainer" instance=ExtResource("2_hfie8")]
+visible = false
 layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="AspectRatioContainer/VBoxContainer/GridContainer/Control"]
-layout_mode = 2
-offset_left = 102.0
-offset_right = 203.0
-offset_bottom = 23.0
-text = "Rental Name"
-
-[node name="Control2" type="Control" parent="AspectRatioContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="AspectRatioContainer/VBoxContainer/GridContainer/Control2"]
-layout_mode = 2
-offset_left = 102.0
-offset_right = 203.0
-offset_bottom = 23.0
-text = "Rental Name"

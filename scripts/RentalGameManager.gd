@@ -4,6 +4,7 @@ extends Node
 @onready var next_timer = $"../NextTimer"
 @onready var timer_text = $"../MiniGameRentalUI/%TimerText"
 @onready var dialogue_text = $"../MiniGameRentalUI/%DialogueText"
+@onready var remaining_counter_text = $"../MiniGameRentalUI/%RemainingCounter"
 var rand = RandomNumberGenerator.new()
 
 const DEFAULT_GAME_TIME = 60
@@ -27,15 +28,22 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	# Update timer text UI
-	timer_text.text = str(int(game_timer.time_left))
+	var remaining_count = len(button_combinations) - current_index
+	remaining_counter_text.text = str(remaining_count)
+	
+	# Update timer text UI
+	timer_text.text = "00:00:" + str(int(game_timer.time_left))
 	
 	# Update dialogue (aka the required button sequence)
 	var current_button_index = button_combinations[current_index]
+	var current_game = constants.RECIPES[current_button_index]
 	var current_button = constants.BUTTON_COMBOS[current_button_index]
 	var current_button_text = ""
 	for text in current_button:
 		current_button_text += text + " "
-	dialogue_text.text = current_button_text
+		
+		
+	dialogue_text.text = current_game
 
 func _input(event):
 	# Restart game
@@ -99,7 +107,7 @@ func generate_combos():
 	# Generate 10 combos
 	for index in 10:
 		var random_index = rand.randf_range(0, max_random)
-		button_combinations.push_back(index)
+		button_combinations.push_back(random_index)
 	
 func complete_game():
 	completed = true
