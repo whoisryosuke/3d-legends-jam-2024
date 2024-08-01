@@ -21,10 +21,10 @@ const BUTTON_COMBOS = [
 	["Square"],
 	["L1", "R1"],
 	["L2","R2"],
-	["DPad Up", "Square"],
-	["DPad Down", "Square"],
-	["DPad Left", "Square"],
-	["DPad Right", "Square"],
+	#["DPad Up", "Square"],
+	#["DPad Down", "Square"],
+	#["DPad Left", "Square"],
+	#["DPad Right", "Square"],
 ]
 
 # Recipes
@@ -36,8 +36,8 @@ const RECIPES = [
 	"Game 4", # ["Square"],
 	"Game 5", # ["L1", "L2"],
 	"Game 6", # ["R1","R2"],
-	"Game 7", # ["DPad Up", "Square"],
-	"Game 8", # ["DPad Down", "Square"],
-	"Game 9", # ["DPad Left", "Square"],
-	"Game 10", # ["DPad Right", "Square"],
+	#"Game 7", # ["DPad Up", "Square"],
+	#"Game 8", # ["DPad Down", "Square"],
+	#"Game 9", # ["DPad Left", "Square"],
+	#"Game 10", # ["DPad Right", "Square"],
 ]
