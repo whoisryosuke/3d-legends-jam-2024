@@ -4,6 +4,7 @@ extends Node
 @onready var next_timer = $"../NextTimer"
 @onready var timer_text = $"../MiniGameRentalUI/%TimerText"
 @onready var dialogue_text = $"../MiniGameRentalUI/%DialogueText"
+@onready var dialogue_container = $"../MiniGameRentalUI/%DialogueContainer"
 @onready var remaining_counter_text = $"../MiniGameRentalUI/%RemainingCounter"
 const ROBOT_MODEL_PATH = "res://scenes/gobot_static.tscn"
 var rand = RandomNumberGenerator.new()
@@ -18,11 +19,19 @@ const INITIAL_POSITIONS = [
 	Vector3(7.1, 0.0, -6.26),
 ]
 const NEW_POSITION = Vector3(11.1, 0.0, -6.26)
-const EXIT_ANIMATION_ROTATE_TIME = 1
-const EXIT_ANIMATION_WALK_TIME = 3
+const INITIAL_ROTATIONS = [
+	0.0,
+	0.0,
+	-90.0,
+	-157.0,
+	-90.0,
+]
+const EXIT_ANIMATION_ROTATE_TIME = 0.5
+const EXIT_ANIMATION_WALK_TIME = 1
 const EXIT_ANIMATION_STATES = [
 	"ROTATE",
 	"WALK",
+	"ROTATE_BACK",
 ]
 
 # Game State
@@ -54,7 +63,10 @@ func _process(delta):
 	remaining_counter_text.text = str(remaining_count)
 	
 	# Update timer text UI
-	timer_text.text = "00:00:" + str(int(game_timer.time_left))
+	var current_time_text = str(int(game_timer.time_left))
+	if len(current_time_text) < 2:
+		current_time_text = "0" + current_time_text
+	timer_text.text = "00:00:" + current_time_text
 	
 	# Update dialogue (aka the required button sequence)
 	var current_button_index = button_combinations[current_index]
@@ -100,14 +112,24 @@ func handle_exit_animation():
 					if customer_index != 0:
 						var customer = customers[customer_index]
 						customer.position.x = lerp(customer.position.x, INITIAL_POSITIONS[customer_index - 1].x, time_interpolation)
-				
+			"ROTATE_BACK":
+				var time_interpolation = 1.0 - (timer.time_left / EXIT_ANIMATION_ROTATE_TIME)
+				for customer_index in len(customers):
+					if customer_index != 0:
+						var customer = customers[customer_index]
+						customer.rotation.y = lerp(customer.rotation.y, INITIAL_ROTATIONS[customer_index], time_interpolation)
 	else:
 		print("ANIMATION TIMER DONE!")
 		# Move to next state and restart timer if needed
-		if exit_animation_state_index == 0:
-			print("Triggering walk animation")
+		if exit_animation_state_index < len(EXIT_ANIMATION_STATES) - 1:
 			exit_animation_state_index += 1
-			$"../ExitAnimation".start(EXIT_ANIMATION_WALK_TIME)
+			match EXIT_ANIMATION_STATES[exit_animation_state_index]:
+				"WALK":
+					print("Triggering walk animation")
+					$"../ExitAnimation".start(EXIT_ANIMATION_WALK_TIME)
+				"ROTATE_BACK":
+					print("Triggering rotate back animation")
+					$"../ExitAnimation".start(EXIT_ANIMATION_ROTATE_TIME)
 		else:
 			print("Animation done!")
 			# Done animating - reset state
@@ -116,11 +138,14 @@ func handle_exit_animation():
 			# Get rid of the first child
 			var customers = $"../Customers".get_children()
 			customers[0].queue_free()
+			
+			# Show dialogue UI
+			dialogue_container.visible = true
 	
 
 func _input(event):
 	# Restart game
-	if(game_timer.is_stopped() and Input.is_action_just_pressed("Cross")):
+	if(game_timer.is_stopped() and Input.is_action_just_pressed("Triangle")):
 		restart_game()
 	# Pause game
 	if(!game_timer.is_stopped() and Input.is_action_just_pressed("Start")):
@@ -133,7 +158,7 @@ func _input(event):
 	
 	# Check for button presses here
 	# Is game still running? And is debounce active?
-	if(!game_timer.is_stopped() and next_timer.is_stopped() and !paused):
+	if(!game_timer.is_stopped() and next_timer.is_stopped() and !paused and !exit_animation_state_animating):
 		var current_button_index = button_combinations[current_index]
 		var button_combo = constants.BUTTON_COMBOS[current_button_index]
 		
@@ -168,6 +193,10 @@ func _input(event):
 			if current_index < len(button_combinations) - 1:
 				# Go to the next combo
 				current_index += 1
+				
+				# Hide dialogue UI
+				dialogue_container.visible = false
+				
 				# Move customers
 				print("Starting exit animation")
 				exit_animation_state_animating = true
@@ -175,7 +204,7 @@ func _input(event):
 				
 				# Spawn a new customer if we need one
 				# -3 for 3 slots, - 1 to account for arrays
-				if current_index < len(button_combinations) - 4:
+				if current_index < len(button_combinations) - 2:
 					print("new customer")
 					var robot = create_customer()
 					robot.position = NEW_POSITION
