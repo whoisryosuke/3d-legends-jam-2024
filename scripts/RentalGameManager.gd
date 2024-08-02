@@ -3,6 +3,7 @@ extends Node
 @onready var game_timer = $"../GameTimer"
 @onready var next_timer = $"../NextTimer"
 @onready var countdown_timer = $"../CountdownTimer"
+@onready var fail_timer = $"../FailTimer"
 @onready var timer_text = $"../CanvasLayer/MiniGameRentalUI/%TimerText"
 @onready var dialogue_text = $"../CanvasLayer/MiniGameRentalUI/%DialogueText"
 @onready var dialogue_container = $"../CanvasLayer/MiniGameRentalUI/%DialogueContainer"
@@ -14,6 +15,7 @@ var rand = RandomNumberGenerator.new()
 const constants = preload("res://scripts/constants.gd")
 const COUNTDOWN_TIME = 3
 const DEFAULT_GAME_TIME = 60
+const FAIL_TIME = 1
 const END_POSITION = Vector3(-0.77, 0.0, -6.16)
 const INITIAL_POSITIONS = [
 	Vector3(1.9, 0.0, -6.16),
@@ -80,7 +82,16 @@ func _process(delta):
 		current_button_text += text + " "
 		
 		
-	dialogue_text.text = current_game
+	# Hide Dialogue if user failed
+	if !fail_timer.is_stopped():
+		dialogue_text.text = "That's not right..."
+	else:
+		dialogue_text.text = current_game
+	
+	# Game over
+	if playing and game_timer.is_stopped():
+		print("Game over!")
+		
 	
 	## Animations
 	# Intro animation
@@ -184,56 +195,63 @@ func _input(event):
 	
 	# Check for button presses here
 	# Is game still running? And is debounce active?
-	if(!game_timer.is_stopped() and next_timer.is_stopped() and !paused and !exit_animation_state_animating):
+	if(!game_timer.is_stopped() and next_timer.is_stopped() and !paused and !exit_animation_state_animating and fail_timer.is_stopped()):
 		var current_button_index = button_combinations[current_index]
 		var button_combo = constants.BUTTON_COMBOS[current_button_index]
 		
-		# Since there are multiple buttons pressed at once, 
-		# we keep track of their state here
-		# TODO: move this up somehow - so we can use a timer
-		# and give user an extra split second or something?
-		var presses = []
-		for button_index in len(button_combo):
-			var button = button_combo[button_index]
-			# Check for input
-			if Input.is_action_just_pressed(button):
-				print("Pressed " + button)
-				presses.push_back(true)
-				# Start debounce
-				#next_timer.start(2)
+		# Check if any input was pressed
+		if Input.is_anything_pressed():
+			# Check if it was a button we need
+			
+			# Since there are multiple buttons pressed at once, 
+			# we keep track of their state here
+			# TODO: move this up somehow - so we can use a timer
+			# and give user an extra split second or something?
+			var presses = []
+			for button_index in len(button_combo):
+				var button = button_combo[button_index]
+				# Check for input
+				if Input.is_action_just_pressed(button):
+					print("Pressed " + button)
+					presses.push_back(true)
+					# Start debounce
+					#next_timer.start(2)
+				else:
+					presses.push_back(false)
+					
+			
+			# Did they press all buttons?
+			var complete = true
+			for button_index in len(button_combo):
+				if !presses[button_index]:
+					complete = false
+			
+			# Success!
+			if complete:
+				# Go to next button or stop at max
+				if current_index + 1 == len(button_combinations):
+					complete_game()
+				if current_index < len(button_combinations) - 1:
+					# Go to the next combo
+					current_index += 1
+					
+					# Hide dialogue UI
+					dialogue_container.visible = false
+					
+					# Move customers
+					print("Starting exit animation")
+					exit_animation_state_animating = true
+					$"../ExitAnimation".start(EXIT_ANIMATION_ROTATE_TIME)
+					
+					# Spawn a new customer if we need one
+					# -3 for 3 slots, - 1 to account for arrays
+					if current_index < len(button_combinations) - 2:
+						print("new customer")
+						var robot = create_customer()
+						robot.position = NEW_POSITION
 			else:
-				presses.push_back(false)
-				
-		
-		# Did they press all buttons?
-		var complete = true
-		for button_index in len(button_combo):
-			if !presses[button_index]:
-				complete = false
-		
-		# Success!
-		if complete:
-			# Go to next button or stop at max
-			if current_index + 1 == len(button_combinations):
-				complete_game()
-			if current_index < len(button_combinations) - 1:
-				# Go to the next combo
-				current_index += 1
-				
-				# Hide dialogue UI
-				dialogue_container.visible = false
-				
-				# Move customers
-				print("Starting exit animation")
-				exit_animation_state_animating = true
-				$"../ExitAnimation".start(EXIT_ANIMATION_ROTATE_TIME)
-				
-				# Spawn a new customer if we need one
-				# -3 for 3 slots, - 1 to account for arrays
-				if current_index < len(button_combinations) - 2:
-					print("new customer")
-					var robot = create_customer()
-					robot.position = NEW_POSITION
+				print("Failed!")
+				fail_timer.start(FAIL_TIME)
 					
 					
 func play_vfx_animation():

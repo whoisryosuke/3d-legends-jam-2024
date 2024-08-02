@@ -62,3 +62,6 @@ one_shot = true
 one_shot = true
 
 [node name="MiniGameCountdown" parent="." instance=ExtResource("7_jvvjy")]
+
+[node name="FailTimer" type="Timer" parent="."]
+one_shot = true
