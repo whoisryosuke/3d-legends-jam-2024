@@ -2,15 +2,17 @@ extends Node
 
 @onready var game_timer = $"../GameTimer"
 @onready var next_timer = $"../NextTimer"
-@onready var timer_text = $"../MiniGameRentalUI/%TimerText"
-@onready var dialogue_text = $"../MiniGameRentalUI/%DialogueText"
-@onready var dialogue_container = $"../MiniGameRentalUI/%DialogueContainer"
-@onready var remaining_counter_text = $"../MiniGameRentalUI/%RemainingCounter"
-const ROBOT_MODEL_PATH = "res://scenes/gobot_static.tscn"
+@onready var countdown_timer = $"../CountdownTimer"
+@onready var timer_text = $"../CanvasLayer/MiniGameRentalUI/%TimerText"
+@onready var dialogue_text = $"../CanvasLayer/MiniGameRentalUI/%DialogueText"
+@onready var dialogue_container = $"../CanvasLayer/MiniGameRentalUI/%DialogueContainer"
+@onready var remaining_counter_text = $"../CanvasLayer/MiniGameRentalUI/%RemainingCounter"
+const ROBOT_MODEL_PATH = "res://scenes/customer.tscn"
 var rand = RandomNumberGenerator.new()
 
 # Constants
 const constants = preload("res://scripts/constants.gd")
+const COUNTDOWN_TIME = 3
 const DEFAULT_GAME_TIME = 60
 const END_POSITION = Vector3(-0.77, 0.0, -6.16)
 const INITIAL_POSITIONS = [
@@ -22,9 +24,9 @@ const NEW_POSITION = Vector3(11.1, 0.0, -6.26)
 const INITIAL_ROTATIONS = [
 	0.0,
 	0.0,
-	-90.0,
-	-157.0,
-	-90.0,
+	90.0,
+	157.0,
+	90.0,
 ]
 const EXIT_ANIMATION_ROTATE_TIME = 0.5
 const EXIT_ANIMATION_WALK_TIME = 1
@@ -35,6 +37,7 @@ const EXIT_ANIMATION_STATES = [
 ]
 
 # Game State
+var intro_playing = false
 var playing = false
 var paused = false
 var completed = false
@@ -80,12 +83,31 @@ func _process(delta):
 	dialogue_text.text = current_game
 	
 	## Animations
+	# Intro animation
+	if !countdown_timer.is_stopped():
+		intro_countdown()
+	if countdown_timer.is_stopped() and intro_playing:
+		intro_playing = false
+		end_countdown()
 	# Exit animation
 	if exit_animation_state_animating:
 		handle_exit_animation()
 
-func handle_exit_animation():
+func intro_countdown():
+	intro_playing = true
+	var countdown_time = countdown_timer.time_left
 	
+	# Update text
+	var countdown_text = str(int(countdown_time))
+	if countdown_text == "0":
+		countdown_text = "Go!"
+	$"../MiniGameCountdown/%CountdownText".text = countdown_text
+	
+func end_countdown():
+	$"../MiniGameCountdown".visible = false
+	start_game_timer()
+
+func handle_exit_animation():
 	# Check if timer is over
 	var timer = $"../ExitAnimation"
 	if !timer.is_stopped():
@@ -127,9 +149,12 @@ func handle_exit_animation():
 				"WALK":
 					print("Triggering walk animation")
 					$"../ExitAnimation".start(EXIT_ANIMATION_WALK_TIME)
+					
 				"ROTATE_BACK":
 					print("Triggering rotate back animation")
 					$"../ExitAnimation".start(EXIT_ANIMATION_ROTATE_TIME)
+					var customers = $"../Customers".get_children()
+					customers[0].get_node("./VFXAnimation").play("disappear")
 		else:
 			print("Animation done!")
 			# Done animating - reset state
@@ -138,6 +163,8 @@ func handle_exit_animation():
 			# Get rid of the first child
 			var customers = $"../Customers".get_children()
 			customers[0].queue_free()
+			# Play game animation
+			play_vfx_animation()
 			
 			# Show dialogue UI
 			dialogue_container.visible = true
@@ -154,7 +181,6 @@ func _input(event):
 			pause_game()
 		else:
 			unpause_game()
-		
 	
 	# Check for button presses here
 	# Is game still running? And is debounce active?
@@ -210,7 +236,12 @@ func _input(event):
 					robot.position = NEW_POSITION
 					
 					
+func play_vfx_animation():
+	var customers = $"../Customers".get_children()
+	customers[0].get_node("./VFXAnimation").play("appear")
+	
 				
+			
 func start_game():
 	# Hydrate game with new button combos
 	generate_combos()
@@ -218,6 +249,10 @@ func start_game():
 	# Load initial models
 	load_initial_models()
 	
+	# Start intro timer
+	countdown_timer.start(COUNTDOWN_TIME);
+	
+func start_game_timer():
 	# Start game timer
 	game_timer.start(DEFAULT_GAME_TIME)
 	
@@ -280,3 +315,4 @@ func load_initial_models():
 	for initial_position in INITIAL_POSITIONS:
 		var robot = create_customer()
 		robot.position = initial_position
+	play_vfx_animation()		

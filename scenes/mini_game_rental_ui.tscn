@@ -28,23 +28,30 @@ layout_mode = 2
 [node name="Top Bar" type="HBoxContainer" parent="AspectRatioContainer/Content"]
 layout_mode = 2
 
-[node name="RemainingBox" type="NinePatchRect" parent="AspectRatioContainer/Content/Top Bar"]
+[node name="Control" type="Control" parent="AspectRatioContainer/Content/Top Bar"]
+layout_mode = 2
+
+[node name="RemainingBox" type="NinePatchRect" parent="AspectRatioContainer/Content/Top Bar/Control"]
 custom_minimum_size = Vector2(600, 150)
 layout_mode = 2
+offset_left = 28.0
+offset_top = 24.0
+offset_right = 628.0
+offset_bottom = 174.0
 texture = ExtResource("3_viow7")
 patch_margin_left = 33
 patch_margin_top = 32
 patch_margin_right = 104
 patch_margin_bottom = 55
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/Content/Top Bar/RemainingBox"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/Content/Top Bar/Control/RemainingBox"]
 layout_mode = 0
 offset_left = 32.0
 offset_top = 16.0
 offset_right = 523.0
 offset_bottom = 104.0
 
-[node name="RemainingLabel" type="Label" parent="AspectRatioContainer/Content/Top Bar/RemainingBox/HBoxContainer"]
+[node name="RemainingLabel" type="Label" parent="AspectRatioContainer/Content/Top Bar/Control/RemainingBox/HBoxContainer"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.309804, 0.309804, 0.309804, 1)
@@ -52,11 +59,11 @@ theme_override_font_sizes/font_size = 40
 text = "CUSTOMERS LEFT:"
 vertical_alignment = 2
 
-[node name="SplitContainer" type="SplitContainer" parent="AspectRatioContainer/Content/Top Bar/RemainingBox/HBoxContainer"]
+[node name="SplitContainer" type="SplitContainer" parent="AspectRatioContainer/Content/Top Bar/Control/RemainingBox/HBoxContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
-[node name="RemainingCounter" type="Label" parent="AspectRatioContainer/Content/Top Bar/RemainingBox/HBoxContainer"]
+[node name="RemainingCounter" type="Label" parent="AspectRatioContainer/Content/Top Bar/Control/RemainingBox/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -64,9 +71,17 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 64
 text = "420"
 
-[node name="TimerBox" type="NinePatchRect" parent="AspectRatioContainer/Content/Top Bar"]
+[node name="Control2" type="Control" parent="AspectRatioContainer/Content/Top Bar"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="TimerBox" type="NinePatchRect" parent="AspectRatioContainer/Content/Top Bar/Control2"]
 custom_minimum_size = Vector2(330, 150)
 layout_mode = 2
+offset_left = -348.0
+offset_top = 24.0
+offset_right = -18.0
+offset_bottom = 174.0
 size_flags_horizontal = 10
 texture = ExtResource("3_viow7")
 patch_margin_left = 33
@@ -74,7 +89,7 @@ patch_margin_top = 32
 patch_margin_right = 104
 patch_margin_bottom = 55
 
-[node name="TimerText" type="Label" parent="AspectRatioContainer/Content/Top Bar/TimerBox"]
+[node name="TimerText" type="Label" parent="AspectRatioContainer/Content/Top Bar/Control2/TimerBox"]
 unique_name_in_owner = true
 layout_mode = 2
 offset_left = 32.0
@@ -90,17 +105,24 @@ text = "00:00:00"
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="DialogueContainer" type="NinePatchRect" parent="AspectRatioContainer/Content/CenterContainer"]
+[node name="Control" type="Control" parent="AspectRatioContainer/Content/CenterContainer"]
+layout_mode = 2
+
+[node name="DialogueContainer" type="NinePatchRect" parent="AspectRatioContainer/Content/CenterContainer/Control"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 150)
 layout_mode = 2
+offset_left = -472.0
+offset_top = -75.0
+offset_right = -72.0
+offset_bottom = 75.0
 texture = ExtResource("3_bgddt")
 patch_margin_left = 60
 patch_margin_top = 30
 patch_margin_right = 60
 patch_margin_bottom = 60
 
-[node name="DialogueText" type="Label" parent="AspectRatioContainer/Content/CenterContainer/DialogueContainer"]
+[node name="DialogueText" type="Label" parent="AspectRatioContainer/Content/CenterContainer/Control/DialogueContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 offset_left = 39.0
@@ -112,9 +134,8 @@ theme_override_font_sizes/font_size = 40
 text = "Dialogue text"
 
 [node name="ComboBox" type="NinePatchRect" parent="AspectRatioContainer/Content"]
-custom_minimum_size = Vector2(600, 150)
+custom_minimum_size = Vector2(600, 250)
 layout_mode = 2
-size_flags_vertical = 3
 texture = ExtResource("3_viow7")
 patch_margin_left = 33
 patch_margin_top = 32
@@ -123,9 +144,10 @@ patch_margin_bottom = 55
 
 [node name="GridContainer" type="GridContainer" parent="AspectRatioContainer/Content/ComboBox"]
 layout_mode = 2
-offset_top = 154.0
-offset_right = 1920.0
-offset_bottom = 539.0
+offset_left = 36.0
+offset_top = 36.0
+offset_right = 1873.0
+offset_bottom = 421.0
 size_flags_vertical = 3
 columns = 2
 

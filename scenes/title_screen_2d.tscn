@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://uyvlh167njpu" path="res://assets/ui/pexels-kseniya-lapteva-93670191-9176032.jpg" id="1_thsld"]
 [ext_resource type="Theme" uid="uid://gsxt6si1r47y" path="res://themes/default_theme.tres" id="2_rrsx0"]
-[ext_resource type="Script" path="res://scenes/Button.gd" id="3_ysw27"]
+[ext_resource type="Script" path="res://scripts/Button.gd" id="3_ysw27"]
 
 [node name="Node2D" type="Node2D"]
 
