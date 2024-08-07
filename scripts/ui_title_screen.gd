@@ -2,4 +2,4 @@ extends Control
 
 func _input(event):
 	if Input.is_anything_pressed():
-		%Button.pressed
+		%Button.emit_signal("pressed")

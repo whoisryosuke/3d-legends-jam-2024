@@ -54,12 +54,15 @@ var exit_animation_state_animating = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	# Hydrate the scene (load dynamic models, generate combos, etc)
+	hydrate_game()
+	
 	# Start the game timer
 	# TODO: Delay to a 1...2..3 countdown
 	start_game()
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+# Here we update the UI (like text) and trigger animations (like countdown or input fail state)
+# We also check for some conditions here (like game over)
 func _process(delta):
 	
 	## Update UI
@@ -89,8 +92,10 @@ func _process(delta):
 		dialogue_text.text = current_game
 	
 	# Game over
-	if playing and game_timer.is_stopped():
+	if playing and !completed and game_timer.is_stopped():
 		print("Game over!")
+		playing = false
+		$"../GameOver".visible = true
 		
 	
 	## Animations
@@ -105,7 +110,9 @@ func _process(delta):
 		handle_exit_animation()
 
 func intro_countdown():
+	$"../MiniGameCountdown".visible = true
 	intro_playing = true
+	
 	var countdown_time = countdown_timer.time_left
 	
 	# Update text
@@ -181,6 +188,9 @@ func handle_exit_animation():
 			dialogue_container.visible = true
 	
 
+# Check for input
+# Here we handle things like restarting and pausing game - or checking for input combos
+# When we check for input combos - we also trigger anmimations and flag if the game is completed or not 
 func _input(event):
 	# Restart game
 	if(game_timer.is_stopped() and Input.is_action_just_pressed("Triangle")):
@@ -260,17 +270,19 @@ func play_vfx_animation():
 	
 				
 			
-func start_game():
+func hydrate_game():
 	# Hydrate game with new button combos
 	generate_combos()
 	
 	# Load initial models
 	load_initial_models()
 	
+func start_game():
 	# Start intro timer
 	countdown_timer.start(COUNTDOWN_TIME);
 	
 func start_game_timer():
+	playing = true
 	# Start game timer
 	game_timer.start(DEFAULT_GAME_TIME)
 	
@@ -316,6 +328,8 @@ func restart_game():
 	
 	# Hide win screen
 	$"../MiniGameWinScreen".visible = false
+	# Hide game over
+	$"../GameOver".visible = false
 	
 	# Start game again
 	start_game()

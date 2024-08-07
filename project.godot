@@ -10,10 +10,11 @@ config_version=5
 
 [application]
 
-config/name="3D Legend Jam 2024"
+config/name="Rockbuster"
+config/description="Run a retro game rental store and help serve these bots"
 run/main_scene="res://scenes/scene_manager.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://assets/rockbuster-icon-512.png"
 
 [display]
 

@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://b08h8oh4o2550"]
+[gd_scene load_steps=12 format=3 uid="uid://b08h8oh4o2550"]
 
 [ext_resource type="PackedScene" uid="uid://cy36aygvs66pn" path="res://assets/models/gobot/gobot_skin.tscn" id="1_6agcr"]
 [ext_resource type="PackedScene" uid="uid://jbq0ujtmu7cx" path="res://scenes/mini_game_rental_ui.tscn" id="2_10k8o"]
 [ext_resource type="Script" path="res://scripts/RentalGameManager.gd" id="3_fnptv"]
 [ext_resource type="PackedScene" uid="uid://c122tuvpq5y52" path="res://scenes/quick_pause.tscn" id="4_l4gis"]
 [ext_resource type="PackedScene" uid="uid://c21p7yb10y5sk" path="res://scenes/mini_game_win_screen.tscn" id="5_kluee"]
+[ext_resource type="PackedScene" uid="uid://b6g6xpcnowv2y" path="res://scenes/game_over.tscn" id="5_q0lyh"]
 [ext_resource type="PackedScene" uid="uid://cgrqwd2215plj" path="res://assets/models/mini_game_level/Rental Mini Game - Level - R3 - Export V1.glb" id="6_35e1p"]
 [ext_resource type="PackedScene" uid="uid://c8njwipxwv8fu" path="res://scenes/mini_game_countdown.tscn" id="7_jvvjy"]
 
@@ -46,6 +47,9 @@ one_shot = true
 one_shot = true
 
 [node name="QuickPause" parent="." instance=ExtResource("4_l4gis")]
+visible = false
+
+[node name="GameOver" parent="." instance=ExtResource("5_q0lyh")]
 visible = false
 
 [node name="MiniGameWinScreen" parent="." instance=ExtResource("5_kluee")]

@@ -1,8 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://c32pp6pxnq1bg"]
+[gd_scene load_steps=8 format=3 uid="uid://c32pp6pxnq1bg"]
 
 [ext_resource type="Script" path="res://scripts/ui_title_screen.gd" id="1_cdemx"]
 [ext_resource type="Theme" uid="uid://gsxt6si1r47y" path="res://themes/default_theme.tres" id="1_sh5to"]
 [ext_resource type="Script" path="res://scripts/Button.gd" id="2_30ict"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xvoho"]
+content_margin_left = 64.0
+content_margin_top = 20.0
+content_margin_right = 64.0
+content_margin_bottom = 20.0
 
 [sub_resource type="Animation" id="Animation_rxl5s"]
 length = 0.001
@@ -21,7 +27,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AspectRatioContainer/GridContainer/Button:disabled")
+tracks/1/path = NodePath("AspectRatioContainer/CenterContainer/Button:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -48,7 +54,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AspectRatioContainer/GridContainer/Button:disabled")
+tracks/1/path = NodePath("AspectRatioContainer/CenterContainer/Button:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -69,27 +75,31 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1920.0
-offset_bottom = -1080.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_cdemx")
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
-layout_mode = 2
-offset_left = 608.5
-offset_top = 785.5
-offset_right = 1311.5
-offset_bottom = 968.5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="GridContainer" type="GridContainer" parent="AspectRatioContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="AspectRatioContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
 
-[node name="Button" type="Button" parent="AspectRatioContainer/GridContainer"]
+[node name="Button" type="Button" parent="AspectRatioContainer/CenterContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("1_sh5to")
 theme_override_font_sizes/font_size = 128
+theme_override_styles/normal = SubResource("StyleBoxEmpty_xvoho")
 text = "Start Game"
 script = ExtResource("2_30ict")
 
@@ -98,4 +108,4 @@ libraries = {
 "": SubResource("AnimationLibrary_kdanp")
 }
 
-[connection signal="pressed" from="AspectRatioContainer/GridContainer/Button" to="AspectRatioContainer/GridContainer/Button" method="_on_pressed"]
+[connection signal="pressed" from="AspectRatioContainer/CenterContainer/Button" to="AspectRatioContainer/CenterContainer/Button" method="_on_pressed"]
